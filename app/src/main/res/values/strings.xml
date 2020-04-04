@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Events</string>
+    <string name="event_list">Event List</string>
+    <string name="event_details">Event Details</string>
 </resources>
