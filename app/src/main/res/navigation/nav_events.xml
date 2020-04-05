@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/eventList"
-        android:name="br.pro.lmit.androidjavaevents.EventListFragment"
+        android:name="br.pro.lmit.androidjavaevents.view.EventListFragment"
         android:label="event_list_fragment"
         tools:layout="@layout/event_list_fragment">
         <action
@@ -20,7 +20,7 @@
     </fragment>
     <fragment
         android:id="@+id/eventDetails"
-        android:name="br.pro.lmit.androidjavaevents.EventDetailFragment"
+        android:name="br.pro.lmit.androidjavaevents.view.EventDetailFragment"
         android:label="event_detail_fragment"
         tools:layout="@layout/event_detail_fragment" />
 </navigation>
