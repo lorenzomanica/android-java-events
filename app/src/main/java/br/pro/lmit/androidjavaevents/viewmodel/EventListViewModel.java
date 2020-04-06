@@ -22,8 +22,16 @@ public class EventListViewModel extends BaseViewModel {
     }
 
     public void loadEventList() {
-        List<EventModel> data = mRepository.getAll();
-        mEventList.postValue(data);
+        mExecutor.execute(() -> {
+            mState.postValue(new LoadingState());
+            List<EventModel> data = mRepository.getAll();
+            mEventList.postValue(data);
+            if (data == null || data.isEmpty()) {
+                mState.postValue(new EmptyState());
+            } else {
+                mState.postValue(new ShowingState());
+            }
+        });
     }
 
 

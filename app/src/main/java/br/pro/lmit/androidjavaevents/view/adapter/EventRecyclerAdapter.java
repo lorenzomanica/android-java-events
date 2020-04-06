@@ -1,5 +1,6 @@
 package br.pro.lmit.androidjavaevents.view.adapter;
 
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import br.pro.lmit.androidjavaevents.R;
 import br.pro.lmit.androidjavaevents.model.EventModel;
@@ -18,8 +21,18 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
 
     private final LiveData<List<EventModel>> mData;
 
+    private ItemEventClickListener mItemEventClickListener;
+
     public EventRecyclerAdapter(@NonNull LiveData<List<EventModel>> data) {
         mData = data;
+    }
+
+    public ItemEventClickListener getItemEventClickListener() {
+        return mItemEventClickListener;
+    }
+
+    public void setItemEventClickListener(ItemEventClickListener l) {
+        this.mItemEventClickListener = l;
     }
 
     @NonNull
@@ -27,7 +40,7 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
     public EventRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                                               int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.view_event_list_item, parent);
+                .inflate(R.layout.view_event_list_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -38,19 +51,38 @@ public class EventRecyclerAdapter extends RecyclerView.Adapter<EventRecyclerAdap
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mData.getValue().size();
     }
 
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public interface ItemEventClickListener {
+        void onItemEventClick(String id);
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
         }
 
-        void bind(EventModel eventModel) {
+        void bind(@NonNull final EventModel event) {
             TextView eventName = itemView.findViewById(R.id.event_name);
-            eventName.setText(eventModel.getName());
+            eventName.setText(event.getTitle());
+
+            TextView eventDate = itemView.findViewById(R.id.event_date);
+            eventDate.setText(DateUtils.formatDateTime(itemView.getContext(), event.getDate(),
+                    DateUtils.FORMAT_NUMERIC_DATE));
+
+            TextView eventPrice = itemView.findViewById(R.id.event_price);
+            NumberFormat formatter = NumberFormat.getCurrencyInstance(Locale.getDefault());
+            eventPrice.setText(formatter.format(event.getPrice()));
+
+            itemView.setOnClickListener(v -> {
+                if (mItemEventClickListener != null) {
+                    mItemEventClickListener.onItemEventClick(event.getId());
+                }
+            });
+
         }
     }
 }
