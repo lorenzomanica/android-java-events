@@ -1,5 +1,16 @@
 <resources>
-    <string name="app_name">Events</string>
+    <string name="app_name">Eventos</string>
     <string name="event_list">Event List</string>
     <string name="event_details">Event Details</string>
+    <string name="image">image</string>
+    <string name="label_description">Descrição</string>
+    <string name="check_in">Check in</string>
+    <string name="label_cupons">Cupons</string>
+    <string name="label_people">Pessoas</string>
+    <string name="share">Compartilhar</string>
+    <string name="email">E-mail</string>
+    <string name="name">Nome</string>
+    <string name="clear">Limpar</string>
+    <string name="send">Enviar</string>
+    <string name="check_in_successful">Check In realizado com sucesso</string>
 </resources>

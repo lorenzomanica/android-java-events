@@ -22,5 +22,20 @@
         android:id="@+id/eventDetails"
         android:name="br.pro.lmit.androidjavaevents.view.EventDetailFragment"
         android:label="event_detail_fragment"
-        tools:layout="@layout/fragment_event_detail" />
+        tools:layout="@layout/fragment_event_detail">
+        <argument
+            android:name="EVENT_ID"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_eventDetails_to_checkIn"
+            app:destination="@id/checkIn" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkIn"
+        android:name="br.pro.lmit.androidjavaevents.view.CheckInFragment"
+        android:label="CheckInFragment">
+        <argument
+            android:name="ARGS_EVENT_ID"
+            app:argType="string" />
+    </fragment>
 </navigation>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#6200EE</color>
-    <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#00ffff</color>
+    <color name="colorPrimaryDark">#00ff00</color>
+    <color name="colorAccent">#9000cc</color>
 
     <color name="analog_blue">#0066cc</color>
     <color name="analog_cyan">#00ffff</color>
@@ -11,5 +11,8 @@
     <color name="analog_purple">#9000cc</color>
 
     <color name="gray_75">#bfbfbf</color>
+    <color name="gray_50">#7f7f7f</color>
+    <color name="text_green">#00bf80</color>
+
 
 </resources>
