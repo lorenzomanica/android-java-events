@@ -24,7 +24,7 @@ public class EventDetailViewModel extends BaseViewModel {
             EventModel data = mRepository.getEventWithId(id);
             mEvent.postValue(data);
             if (data == null) {
-                mState.postValue(new EmptyState());
+                mState.postValue(new ErrorState(1, "Ocorreu um erro"));
             } else {
                 mState.postValue(new ShowingState());
             }

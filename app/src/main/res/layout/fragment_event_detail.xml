@@ -253,7 +253,6 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.4" />
 
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.core.widget.NestedScrollView>

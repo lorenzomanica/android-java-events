@@ -23,6 +23,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
@@ -42,6 +43,11 @@ public class EventDetailFragment extends Fragment {
 
     private CuponRecyclerAdapter mCuponAdapter;
     private PeopleRecyclerAdapter mPeopleAdapter;
+
+    RecyclerView cuponRecycler;
+    RecyclerView peopleRecyler;
+
+    private View mDetailsContainer;
 
     public static EventDetailFragment newInstance() {
         return new EventDetailFragment();
@@ -67,8 +73,11 @@ public class EventDetailFragment extends Fragment {
         final TextView eventDate = view.findViewById(R.id.event_date);
         final TextView eventLocation = view.findViewById(R.id.event_location);
         final Button checkIn = view.findViewById(R.id.checkin_button);
-        final RecyclerView cuponRecycler = view.findViewById(R.id.cupons_recycler);
-        final RecyclerView peopleRecyler = view.findViewById(R.id.people_recycler);
+
+        mDetailsContainer = view.findViewById(R.id.scroll_view);
+
+        cuponRecycler = view.findViewById(R.id.cupons_recycler);
+        peopleRecyler = view.findViewById(R.id.people_recycler);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.HORIZONTAL, false);
@@ -97,7 +106,8 @@ public class EventDetailFragment extends Fragment {
             eventDate.setText(DateUtils.formatDateTime(getContext(), event.getDate(),
                     DateUtils.FORMAT_NUMERIC_DATE));
 
-            eventLocation.setText(String.format(Locale.getDefault(), "%,.2f %,.2f", event.getLatitude(), event.getLongitude()));
+            eventLocation.setText(String.format(Locale.getDefault(), "%,.2f %,.2f",
+                    event.getLatitude(), event.getLongitude()));
 
             eventDescription.setText(event.getDescription());
 
@@ -108,6 +118,19 @@ public class EventDetailFragment extends Fragment {
 
             mCuponAdapter.notifyDataSetChanged();
             mPeopleAdapter.notifyDataSetChanged();
+        });
+
+        mViewModel.getViewModelState().observe(getViewLifecycleOwner(), state -> {
+            if (state instanceof BaseViewModel.ErrorState) {
+                String error = ((BaseViewModel.ErrorState) state).getErrorDescription();
+                Snackbar.make(view, error, Snackbar.LENGTH_LONG).show();
+            }
+            if (state instanceof BaseViewModel.LoadingState
+                    || state instanceof BaseViewModel.InitState) {
+                mDetailsContainer.setVisibility(View.GONE);
+            } else {
+                mDetailsContainer.setVisibility(View.VISIBLE);
+            }
         });
 
         if (getArguments() != null && getArguments().containsKey(ARGS_EVENT_ID)) {
@@ -145,7 +168,8 @@ public class EventDetailFragment extends Fragment {
     private void shareEvent(String id) {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        intent.putExtra(Intent.EXTRA_TEXT, "http://5b840ba5db24a100142dcd8c.mockapi.io/api/events/" + id);
+        intent.putExtra(Intent.EXTRA_TEXT,
+                "http://5b840ba5db24a100142dcd8c.mockapi.io/api/events/" + id);
         startActivity(Intent.createChooser(intent, getString(R.string.share)));
     }
 }

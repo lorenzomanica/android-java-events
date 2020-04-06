@@ -13,4 +13,5 @@
     <string name="clear">Limpar</string>
     <string name="send">Enviar</string>
     <string name="check_in_successful">Check In realizado com sucesso</string>
+    <string name="no_items">Nenhum item encontrado</string>
 </resources>

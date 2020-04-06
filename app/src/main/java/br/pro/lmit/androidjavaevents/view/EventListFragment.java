@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import br.pro.lmit.androidjavaevents.R;
 import br.pro.lmit.androidjavaevents.view.adapter.EventRecyclerAdapter;
 import br.pro.lmit.androidjavaevents.viewmodel.BaseViewModel;
@@ -26,6 +28,7 @@ public class EventListFragment extends Fragment {
     private EventRecyclerAdapter mAdapter;
     private RecyclerView mRecycler;
     private SwipeRefreshLayout mSwipeRefresh;
+    private View mEmptyView;
 
     public static EventListFragment newInstance() {
         return new EventListFragment();
@@ -39,6 +42,8 @@ public class EventListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_event_list, container, false);
 
         ((AppCompatActivity) getActivity()).setSupportActionBar(view.findViewById(R.id.toolbar));
+
+        mEmptyView = view.findViewById(R.id.empty_list);
 
         mRecycler = view.findViewById(R.id.recycler);
         mSwipeRefresh = view.findViewById(R.id.swipe_refresh);
@@ -60,9 +65,20 @@ public class EventListFragment extends Fragment {
 
         mViewModel.getViewModelState().observe(getViewLifecycleOwner(), state -> {
             mSwipeRefresh.setRefreshing(state instanceof BaseViewModel.LoadingState);
+            if (state instanceof BaseViewModel.ErrorState) {
+                String error = ((BaseViewModel.ErrorState) state).getErrorDescription();
+                Snackbar.make(view, error, Snackbar.LENGTH_LONG).show();
+            }
             if (state instanceof BaseViewModel.FinishState) {
                 Navigation.findNavController(getActivity(), R.id.nav_host)
                         .popBackStack();
+            }
+            if (state instanceof BaseViewModel.EmptyState) {
+                mEmptyView.setVisibility(View.VISIBLE);
+                mRecycler.setVisibility(View.GONE);
+            } else {
+                mEmptyView.setVisibility(View.GONE);
+                mRecycler.setVisibility(View.VISIBLE);
             }
         });
 
